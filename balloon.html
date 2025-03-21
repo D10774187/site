@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>上升的气球动画</title>
+    <style>
+       .balloon {
+            position: absolute;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px; /* 明确设置气球的宽高 */
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        const numBalloons = 10;
+        const colors = ["red", "blue", "green", "yellow", "orange", "purple", "pink", "cyan", "magenta", "brown"];
+        for (let i = 0; i < numBalloons; i++) {
+            const balloon = document.createElement('div');
+            balloon.classList.add('balloon');
+            // 随机初始水平位置，保证在页面内
+            balloon.style.left = Math.random() * (window.innerWidth - 50) + 'px'; 
+            // 初始在页面底部
+            balloon.style.top = window.innerHeight; 
+            // 随机选取颜色
+            const randomColorIndex = Math.floor(Math.random() * colors.length);
+            balloon.style.backgroundColor = colors[randomColorIndex];
+            document.body.appendChild(balloon);
+
+            function animateBalloon() {
+                const yChange = -3; // 气球上升速度
+                let newTop = parseInt(balloon.style.top) + yChange;
+                if (isNaN(newTop)) {
+                    newTop = window.innerHeight; // 处理top值获取异常的情况
+                }
+                balloon.style.top = newTop + 'px';
+                // 边界检查，当气球超出顶部则回到底部重新开始
+                if (newTop < -50) {
+                    balloon.style.top = window.innerHeight;
+                    balloon.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+                }
+            }
+
+            setInterval(animateBalloon, 50);
+        }
+    </script>
+</body>
+
+</html>
