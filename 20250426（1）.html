@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        @keyframes fly {
+            from {
+                top: 700px
+            }
+            to {
+                top: 0px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        const colors = ['red', 'orange', 'yellow', 'green', 'black', 'blue', 'purple'];
+
+        function Balloon(id, color1, diameter, speed) {
+            this.id = id;
+            this.color = color1;
+            this.diameter = diameter;
+            this.speed = speed;
+            this.make = function () {
+                let dv = document.createElement("div");
+                dv.id = 'b' + this.id;
+                dv.style.cssText = "width:" + this.diameter + "px; height:" + this.diameter + "px; border-radius:" + (this.diameter / 2) + "px; background-color:" + this.color + "; position:absolute; left:" + (this.id * 50) + "px; top:700px";
+                dv.innerHTML = this.id;
+                document.body.appendChild(dv);
+            };
+            this.rise = function () {
+                let dv = document.getElementById('b' + this.id);
+                dv.style.animationName = "fly";
+                dv.style.animationDuration = ~~(700 / this.speed) +'s';
+                const increaseFactor = 0.1;
+                this.diameter += this.diameter * increaseFactor;
+                dv.style.width = this.diameter + 'px';
+                dv.style.height = this.diameter + 'px';
+                dv.style.borderRadius = (this.diameter / 2) + 'px';
+                const burstHeight = 100;
+                if (parseInt(dv.style.top) <= burstHeight) {
+                    dv.parentNode.removeChild(dv);
+                }
+            };
+        }
+
+        for (let i = 0; i < 100; i++) {
+            const randomColorIndex = Math.floor(Math.random() * colors.length);
+            const randomColor = colors[randomColorIndex];
+            let s = Math.random() * 200;
+            let w = (Math.random() * 200 + 30);
+            let b = new Balloon(i, randomColor, w, s);
+            b.make();
+            b.rise();
+        }
+    </script>
+</body>
+
+</html>
